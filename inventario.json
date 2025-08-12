@@ -1,0 +1,26 @@
+[
+  {
+    "Id": 1,
+    "Nome": "Kit Faca",
+    "Preco": 19.99,
+    "QuantidadeEmStock": 16
+  },
+  {
+    "Id": 2,
+    "Nome": "Kit Colher",
+    "Preco": 20,
+    "QuantidadeEmStock": 4
+  },
+  {
+    "Id": 3,
+    "Nome": "faKA",
+    "Preco": 2,
+    "QuantidadeEmStock": 4
+  },
+  {
+    "Id": 4,
+    "Nome": "kit-cozinha",
+    "Preco": 69.99,
+    "QuantidadeEmStock": 24
+  }
+]

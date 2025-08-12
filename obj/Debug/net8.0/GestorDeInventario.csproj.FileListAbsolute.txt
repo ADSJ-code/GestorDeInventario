@@ -1,0 +1,14 @@
+/home/andre/projetos-csharp/GestorDeInventario/bin/Debug/net8.0/GestorDeInventario
+/home/andre/projetos-csharp/GestorDeInventario/bin/Debug/net8.0/GestorDeInventario.deps.json
+/home/andre/projetos-csharp/GestorDeInventario/bin/Debug/net8.0/GestorDeInventario.runtimeconfig.json
+/home/andre/projetos-csharp/GestorDeInventario/bin/Debug/net8.0/GestorDeInventario.dll
+/home/andre/projetos-csharp/GestorDeInventario/bin/Debug/net8.0/GestorDeInventario.pdb
+/home/andre/projetos-csharp/GestorDeInventario/obj/Debug/net8.0/GestorDeInventario.GeneratedMSBuildEditorConfig.editorconfig
+/home/andre/projetos-csharp/GestorDeInventario/obj/Debug/net8.0/GestorDeInventario.AssemblyInfoInputs.cache
+/home/andre/projetos-csharp/GestorDeInventario/obj/Debug/net8.0/GestorDeInventario.AssemblyInfo.cs
+/home/andre/projetos-csharp/GestorDeInventario/obj/Debug/net8.0/GestorDeInventario.csproj.CoreCompileInputs.cache
+/home/andre/projetos-csharp/GestorDeInventario/obj/Debug/net8.0/GestorDeInventario.dll
+/home/andre/projetos-csharp/GestorDeInventario/obj/Debug/net8.0/refint/GestorDeInventario.dll
+/home/andre/projetos-csharp/GestorDeInventario/obj/Debug/net8.0/GestorDeInventario.pdb
+/home/andre/projetos-csharp/GestorDeInventario/obj/Debug/net8.0/GestorDeInventario.genruntimeconfig.cache
+/home/andre/projetos-csharp/GestorDeInventario/obj/Debug/net8.0/ref/GestorDeInventario.dll
