@@ -1,16 +1,12 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+# Usa a imagem completa do SDK, que contém as ferramentas (como 'ef') e o runtime.
+FROM mcr.microsoft.com/dotnet/sdk:8.0
 WORKDIR /app
 
-COPY *.csproj .
-RUN dotnet restore
-
+# Copia todos os arquivos do projeto para o contentor
 COPY . .
-RUN dotnet publish -c Release -o /app/publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
-WORKDIR /app
-COPY --from=build /app/publish .
+# Expõe a porta que a aplicação vai usar no Render
+ENV PORT=8080
 
-EXPOSE 8080
-
-ENTRYPOINT ["dotnet", "GestorDeInventario.Web.dll"]
+# Comando de arranque: primeiro atualiza a base de dados, depois inicia a aplicação
+CMD ["sh", "-c", "dotnet ef database update && dotnet watch run --urls http://*:$PORT"]
