@@ -1,0 +1,163 @@
+@model GestorDeInventario.Web.Models.Produto
+
+@{
+    ViewData["Title"] = "Editar Produto";
+    var historico = ViewBag.Historico as List<GestorDeInventario.Web.Models.HistoricoAlteracao>;
+    var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("America/Sao_Paulo");
+}
+
+<h1>@ViewData["Title"]</h1>
+<h4>Altere os dados abaixo e clique em Salvar</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Editar">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantidade" class="control-label"></label>
+                <input asp-for="Quantidade" class="form-control" />
+                <span asp-validation-for="Quantidade" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Preco" class="control-label"></label>
+                <input asp-for="Preco" class="form-control" data-val="false" />
+                <span asp-validation-for="Preco" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataValidade" class="control-label"></label>
+                <input asp-for="DataValidade" class="form-control" type="date" />
+                <span asp-validation-for="DataValidade" class="text-danger"></span>
+            </div>
+            <div class="form-check mt-2">
+                <input class="form-check-input" type="checkbox" id="indeterminadoCheck">
+                <label class="form-check-label" for="indeterminadoCheck">Validade Indeterminada</label>
+            </div>
+            <div class="form-group mt-3">
+                <label for="motivoSelecionado" class="control-label">Qual o motivo da alteração?</label>
+                <select id="motivoSelecionado" class="form-select">
+                    <option value="">-- Selecione um motivo --</option>
+                    <option value="Erro de digitação">Erro de digitação</option>
+                    <option value="Falha de Sistema">Falha de Sistema</option>
+                    <option value="Alteração de Estoque">Alteração de Estoque</option>
+                    <option value="Outro">Outro:</option>
+                </select>
+            </div>
+            <div id="outroMotivoContainer" class="form-group mt-2" style="display:none;">
+                <label for="motivoOutro" class="control-label">Especifique o motivo</label>
+                <input type="text" id="motivoOutro" class="form-control" />
+            </div>
+            <input type="hidden" id="motivo" name="motivo" />
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-primary" id="salvarBtn" />
+                <a asp-action="Index" class="btn btn-secondary">Voltar para a Lista</a>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-8">
+        <h4>Últimas 5 Alterações</h4>
+        @if (historico != null && historico.Any())
+        {
+            <table class="table table-sm table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Data</th>
+                        <th>Campo</th>
+                        <th>Valor Antigo</th>
+                        <th>Valor Novo</th>
+                        <th>Motivo</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in historico)
+                    {
+                        <tr>
+                            <td>@(TimeZoneInfo.ConvertTimeFromUtc(item.DataAlteracao, timeZoneInfo).ToString("g"))</td>
+                            <td>@item.CampoAlterado</td>
+                            <td>@item.ValorAntigo</td>
+                            <td>@item.ValorNovo</td>
+                            <td>@item.Motivo</td>
+                            <td>
+                                <form asp-action="DesfazerAlteracao" asp-route-id="@item.Id" method="post">
+                                    <button type="submit" class="btn btn-outline-warning btn-sm">Desfazer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>Nenhuma alteração registrada para este produto.</p>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            var motivoSelect = document.getElementById('motivoSelecionado');
+            var outroContainer = document.getElementById('outroMotivoContainer');
+            var motivoOutroInput = document.getElementById('motivoOutro');
+            var form = document.querySelector('form');
+            var motivoFinalInput = document.getElementById('motivo');
+            var salvarBtn = document.getElementById('salvarBtn');
+
+            function toggleDataValidade() {
+                var dataInput = document.getElementById('DataValidade');
+                var isChecked = document.getElementById('indeterminadoCheck').checked;
+                dataInput.disabled = isChecked;
+                if (isChecked) {
+                    dataInput.value = '';
+                }
+            }
+            
+            document.getElementById('indeterminadoCheck').addEventListener('change', toggleDataValidade);
+            
+            if (!document.getElementById('DataValidade').value) {
+                document.getElementById('indeterminadoCheck').checked = true;
+            }
+            toggleDataValidade();
+
+            function validarFormulario() {
+                var motivoSelecionado = motivoSelect.value;
+                var motivoOutro = motivoOutroInput.value;
+                var formValido = motivoSelecionado !== "" && (motivoSelecionado !== "Outro" || motivoOutro.trim() !== "");
+                salvarBtn.disabled = !formValido;
+            }
+
+            motivoSelect.addEventListener('change', function() {
+                if (this.value === 'Outro') {
+                    outroContainer.style.display = 'block';
+                } else {
+                    outroContainer.style.display = 'none';
+                    motivoOutroInput.value = '';
+                }
+                validarFormulario();
+            });
+            
+            motivoOutroInput.addEventListener('input', validarFormulario);
+
+            form.addEventListener('submit', function(e) {
+                var motivoSelecionado = motivoSelect.value;
+                if (motivoSelecionado === 'Outro') {
+                    motivoFinalInput.value = motivoOutroInput.value;
+                } else {
+                    motivoFinalInput.value = motivoSelecionado;
+                }
+            });
+
+            validarFormulario();
+        });
+    </script>
+}

@@ -1,0 +1,75 @@
+@model GestorDeInventario.Web.Models.ProdutoViewModel
+
+@{
+    ViewData["Title"] = "Detalhes do Produto";
+    var historico = ViewBag.Historico as List<GestorDeInventario.Web.Models.HistoricoAlteracao>;
+    var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("America/Sao_Paulo");
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Quantidade)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Quantidade)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Preco)
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.Preco.ToString("C")
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DataValidade)
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.DataValidadeFormatada
+        </dd>
+    </dl>
+</div>
+<hr />
+<h4>Histórico de Alterações</h4>
+@if (historico != null && historico.Any())
+{
+    <table class="table table-sm table-bordered">
+        <thead class="thead-light">
+            <tr>
+                <th>Data</th>
+                <th>Campo</th>
+                <th>Valor Antigo</th>
+                <th>Valor Novo</th>
+                <th>Motivo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in historico)
+            {
+                <tr>
+                    <td>@(TimeZoneInfo.ConvertTimeFromUtc(item.DataAlteracao, timeZoneInfo).ToString("g"))</td>
+                    <td>@item.CampoAlterado</td>
+                    <td>@item.ValorAntigo</td>
+                    <td>@item.ValorNovo</td>
+                    <td>@item.Motivo</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Nenhuma alteração registrada para este produto.</p>
+}
+<div>
+    <a asp-action="Editar" asp-route-id="@Model?.Id" class="btn btn-primary">Editar</a> 
+    <a asp-action="Index" class="btn btn-secondary">Voltar para a Lista</a>
+</div>

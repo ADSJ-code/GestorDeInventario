@@ -1,0 +1,16 @@
+[
+  {
+    "Id": 1,
+    "Nome": "Coca Cola",
+    "Quantidade": 10,
+    "Preco": 15.00,
+    "DataValidade": "2026-08-20T00:00:00"
+  },
+  {
+    "Id": 2,
+    "Nome": "Desodorante ,",
+    "Quantidade": 15,
+    "Preco": 23.30,
+    "DataValidade": "2031-11-18T00:00:00"
+  }
+]
