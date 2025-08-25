@@ -5,4 +5,6 @@ COPY . .
 
 RUN dotnet tool install --global dotnet-ef
 
+ENV PATH="$PATH:/root/.dotnet/tools"
+
 CMD ["sh", "-c", "cd GestorDeInventario.Web && dotnet ef database update && dotnet run --urls http://0.0.0.0:$PORT"]
