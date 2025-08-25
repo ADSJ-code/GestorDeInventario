@@ -3,13 +3,4 @@ WORKDIR /app
 
 COPY . .
 
-WORKDIR /app/GestorDeInventario.Web
-
-RUN dotnet publish -c Release -o /app/publish
-
-WORKDIR /app/publish
-
-ENV PORT 8080
-ENV ASPNETCORE_URLS="http://+:8080"
-
-ENTRYPOINT ["dotnet", "GestorDeInventario.Web.dll"]
+CMD cd GestorDeInventario.Web && dotnet ef database update && dotnet run --urls http://0.0.0.0:$PORT
