@@ -3,11 +3,9 @@ WORKDIR /app
 
 COPY . .
 
-WORKDIR /app/GestorDeInventario.Web
+RUN dotnet publish "GestorDeInventario.Web/GestorDeInventario.Web.csproj" -c Release -o /app/publish
 
-RUN dotnet publish -c Release -o /app/publish
-
-RUN dotnet ef database update --startup-project /app/GestorDeInventario.Web --project /app/GestorDeInventario.Web
+RUN dotnet ef database update --project "GestorDeInventario.Web/GestorDeInventario.Web.csproj"
 
 WORKDIR /app/publish
 
