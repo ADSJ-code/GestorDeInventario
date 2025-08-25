@@ -3,14 +3,9 @@ WORKDIR /app
 
 COPY . .
 
-WORKDIR /app/GetorDeInventario.Web
+RUN dotnet publish ./GestorDeInventario.Web/GestorDeInventario.Web.csproj -c Release -o out
 
-RUN dotnet ef database update
+COPY entrypoint.sh .
+RUN chmod +x ./entrypoint.sh
 
-RUN dotnet publish -c Release -o /app/publish
-
-WORKDIR /app/publish
-
-ENV ASPNETCORE_URLS="http://+:8080"
-
-ENTRYPOINT ["dotnet", "GestorDeInventario.Web.dll"]
+ENTRYPOINT ["./entrypoint.sh"]
