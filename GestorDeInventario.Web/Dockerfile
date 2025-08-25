@@ -1,19 +1,11 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0
-WORKDIR /src
-
-COPY ["GestorDeInventario.Web/GestorDeInventario.Web.csproj", "GestorDeInventario.Web/"]
-RUN dotnet restore "GestorDeInventario.Web/GestorDeInventario.Web.csproj"
+WORKDIR /app
 
 COPY . .
-WORKDIR "/src/GestorDeInventario.Web"
-RUN dotnet build "GestorDeInventario.Web.csproj" -c Release -o /app/build
 
-FROM build AS publish
-RUN dotnet publish "GestorDeInventario.Web.csproj" -c Release -o /app/publish
+RUN dotnet publish ./GestorDeInventario.Web/GestorDeInventario.Web.csproj -c Release -o out
 
-RUN dotnet ef database update --project /src/GestorDeInventario.Web/GestorDeInventario.Web.csproj --startup-project /src/GestorDeInventario.Web/GestorDeInventario.Web.csproj
+COPY entrypoint.sh .
+RUN chmod +x ./entrypoint.sh
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "GestorDeInventario.Web.dll"]
+ENTRYPOINT ["./entrypoint.sh"]
