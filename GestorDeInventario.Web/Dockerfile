@@ -3,4 +3,4 @@ WORKDIR /app
 
 COPY . .
 
-CMD cd GestorDeInventario.Web && dotnet ef database update && dotnet run --urls http://0.0.0.0:$PORT
+CMD ["sh", "-c", "cd GestorDeInventario.Web && dotnet ef database update && dotnet run --urls http://0.0.0.0:$PORT"]
