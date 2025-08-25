@@ -5,7 +5,9 @@ COPY . .
 
 RUN dotnet publish ./GestorDeInventario.Web/GestorDeInventario.Web.csproj -c Release -o out
 
-COPY entrypoint.sh .
-RUN chmod +x ./entrypoint.sh
+ENV PORT 8080
+ENV ASPNETCORE_URLS="http://+:8080"
 
-ENTRYPOINT ["./entrypoint.sh"]
+WORKDIR /app/out
+
+CMD ["sh", "-c", "dotnet ef database update --project /app/GestorDeInventario.Web/GestorDeInventario.Web.csproj && dotnet GestorDeInventario.Web.dll"]
